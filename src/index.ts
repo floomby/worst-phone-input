@@ -239,9 +239,13 @@ const toRun = () => {
     thumb.setAttribute("cx", thumbXCoordinate.toString());
     thumb.setAttribute("cy", (footerHeight / 2).toString());
     thumb.setAttribute("r", "10");
-    thumb.setAttribute("fill", "blue");
-    thumb.setAttribute("stroke", "blue");
-    thumb.setAttribute("stroke-width", "0");
+    thumb.setAttribute("fill", draggingPhase ? "orange" : "blue");
+    thumb.setAttribute("stroke", "purple");
+    thumb.setAttribute("stroke-width", "3");
+    thumb.style.cursor = "pointer";
+    if (!draggingPhase) {
+      thumb.classList.add("svg-thumb");
+    }
 
     phaseGroup.appendChild(thumb);
 
@@ -285,9 +289,13 @@ const toRun = () => {
     thumb.setAttribute("cx", thumbXCoordinate.toString());
     thumb.setAttribute("cy", (footerHeight / 2).toString());
     thumb.setAttribute("r", "10");
-    thumb.setAttribute("fill", "blue");
-    thumb.setAttribute("stroke", "blue");
-    thumb.setAttribute("stroke-width", "0");
+    thumb.setAttribute("fill", draggingWavelength ? "orange" : "blue");
+    thumb.setAttribute("stroke", "purple");
+    thumb.setAttribute("stroke-width", "3");
+    thumb.style.cursor = "pointer";
+    if (!draggingWavelength) {
+      thumb.classList.add("svg-thumb");
+    }
 
     wavelengthGroup.appendChild(thumb);
 
@@ -351,7 +359,13 @@ const toRun = () => {
     thumb.setAttribute("cy", thumbY.toString());
 
     thumb.setAttribute("r", "10");
-    thumb.setAttribute("fill", "blue");
+    thumb.setAttribute("fill", dragging ? "orange" : "blue");
+    thumb.setAttribute("stroke", "purple");
+    thumb.setAttribute("stroke-width", "3");
+    thumb.style.cursor = "pointer";
+    if (!dragging) {
+      thumb.classList.add("svg-thumb");
+    }
     mainGroup.appendChild(thumb);
 
     if (!dragging) {
@@ -404,7 +418,7 @@ const toRun = () => {
   };
 
   drawSvg();
-  
+
   controlContainer.appendChild(svg);
 
   svg.onmousemove = (e) => {
@@ -457,9 +471,23 @@ const toRun = () => {
   };
 
   svg.onmouseleave = () => {
+    const thumbNeedsRedraw = dragging;
+    const phaseThumbNeedsRedraw = draggingPhase;
+    const wavelengthThumbNeedsRedraw = draggingWavelength;
+
     dragging = false;
     draggingPhase = false;
     draggingWavelength = false;
+
+    if (thumbNeedsRedraw) {
+      redrawThumb();
+    }
+    if (phaseThumbNeedsRedraw) {
+      redrawPhaseThumb();
+    }
+    if (wavelengthThumbNeedsRedraw) {
+      redrawWavelengthThumb();
+    }
   };
 
   svg.onmouseup = (e) => {
@@ -467,9 +495,23 @@ const toRun = () => {
       return;
     }
 
+    const thumbNeedsRedraw = dragging;
+    const phaseThumbNeedsRedraw = draggingPhase;
+    const wavelengthThumbNeedsRedraw = draggingWavelength;
+
     dragging = false;
     draggingPhase = false;
     draggingWavelength = false;
+
+    if (thumbNeedsRedraw) {
+      redrawThumb();
+    }
+    if (phaseThumbNeedsRedraw) {
+      redrawPhaseThumb();
+    }
+    if (wavelengthThumbNeedsRedraw) {
+      redrawWavelengthThumb();
+    }
   };
 
   // app.appendChild(wavelengthSlider);
