@@ -80,15 +80,6 @@ const drawTrack = (svg: SVGElement, phase: number, wavelength: number, boxHeight
   svg.appendChild(path);
 };
 
-const drawSmallRedCircle = (svg: SVGElement, x: number, y: number) => {
-  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  circle.setAttribute("cx", x.toString());
-  circle.setAttribute("cy", y.toString());
-  circle.setAttribute("r", "10");
-  circle.setAttribute("fill", "red");
-  svg.appendChild(circle);
-};
-
 const drawRoundingMask = (svg: SVGElement, x: number, y: number, theta: number) => {
   const innerRadius = 5.5;
 
@@ -522,8 +513,4 @@ const toRun = () => {
   setInterval(update, 1000 / 60);
 };
 
-if (document.readyState === "complete") {
-  toRun();
-} else {
-  document.addEventListener("DOMContentLoaded", toRun);
-}
+toRun();
