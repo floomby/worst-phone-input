@@ -178,8 +178,12 @@ const toRun = () => {
     throw new Error("No app element found");
   }
 
-  const phoneView = document.createElement("div");
-  phoneView.id = "phone-view";
+  const header = document.createElement("h2");
+  header.classList.add("unselectable");
+  app.appendChild(header);
+
+  // const phoneView = document.createElement("div");
+  // phoneView.id = "phone-view";
 
   const controlContainer = document.createElement("div");
   controlContainer.id = "control-container";
@@ -375,10 +379,11 @@ const toRun = () => {
         }
 
         dragging = true;
+        e.stopPropagation();
       };
     }
 
-    phoneView.innerText = formatNumberAsPhone(Math.floor(thumbCoordinate * 9999999.9));
+    header.innerText = `Current Phone Number: ${formatNumberAsPhone(Math.floor(thumbCoordinate * 9999999.9))}`;
   };
 
   const redrawThumb = () => {
@@ -513,11 +518,6 @@ const toRun = () => {
       redrawWavelengthThumb();
     }
   };
-
-  // app.appendChild(wavelengthSlider);
-  // app.appendChild(phaseSlider);
-
-  app.appendChild(phoneView);
 
   setInterval(update, 1000 / 60);
 };
