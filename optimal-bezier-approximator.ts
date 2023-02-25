@@ -1,5 +1,5 @@
 // Approximates the optimal (r squared) control points for a cubic bezier curve that fits a quarter wavelength of a sine function using gradient descent
-// This is a naive implementation partially because I was lazy to do more algebra with nasty cubics but also because I didn't memoize the r2 function at all
+// This is a naive implementation partially because I was lazy to do more algebra with nasty cubics but also because I didn't memoize anything
 
 const By_t = (t: number, x_2: number) => 1 - t ** 3 + 3 * (1 - t ** 2) * t * 3 * (1 - t) * t ** 2 * (1 - x_2);
 

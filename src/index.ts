@@ -4,10 +4,8 @@ const formatNumberAsPhone = (num: number) => {
   const numStr = num.toString();
   // append 0s to the front if needed
   const numStrPadded = numStr.padStart(7, "0");
-  // split into first 3 and last 4
   const firstThree = numStrPadded.slice(0, 3);
   const lastFour = numStrPadded.slice(3);
-  // return formatted string
   return `${firstThree}-${lastFour}`;
 };
 
@@ -17,6 +15,7 @@ const halfWave = (startX: number, endX: number, amplitude: number, offset: numbe
   const startY = startIsTrough ? offset + amplitude : offset - amplitude;
   const endY = startIsTrough ? offset - amplitude : offset + amplitude;
 
+  // numbers calculated using the optimal-bezier-approximator.ts script
   const x_1 = 0.32167769118546863;
   const x_2 = 1 - 0.46691686203245664;
   const y_2 = 1 - x_2;
@@ -83,7 +82,7 @@ const drawTrack = (svg: SVGElement, phase: number, wavelength: number, boxHeight
 const drawRoundingMask = (svg: SVGElement, x: number, y: number, theta: number) => {
   const innerRadius = 5.5;
 
-  // draw a crescent
+  // draw a crescent thing (its a goofy shape ok, idk what it is called)
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
   const startAngle = theta - Math.PI / 2;
@@ -172,9 +171,6 @@ const toRun = () => {
   const header = document.createElement("h2");
   header.classList.add("unselectable");
   app.appendChild(header);
-
-  // const phoneView = document.createElement("div");
-  // phoneView.id = "phone-view";
 
   const controlContainer = document.createElement("div");
   controlContainer.id = "control-container";
