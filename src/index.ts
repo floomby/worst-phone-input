@@ -248,6 +248,10 @@ const toRun = () => {
       draggingPhase = true;
       e.stopPropagation();
     };
+
+    thumb.ontouchstart = (e) => {
+      draggingPhase = true;
+    };
   };
 
   const redrawPhaseThumb = () => {
@@ -297,6 +301,10 @@ const toRun = () => {
 
       draggingWavelength = true;
       e.stopPropagation();
+    };
+
+    thumb.ontouchstart = (e) => {
+      draggingWavelength = true;
     };
   };
 
@@ -368,6 +376,10 @@ const toRun = () => {
         dragging = true;
         e.stopPropagation();
       };
+
+      thumb.ontouchstart = (e) => {
+        dragging = true;
+      };
     }
 
     header.innerText = `Current Phone Number: ${formatNumberAsPhone(Math.floor(thumbCoordinate * 9999999.9))}`;
@@ -413,9 +425,7 @@ const toRun = () => {
 
   controlContainer.appendChild(svg);
 
-  svg.onmousemove = (e) => {
-    const x = e.offsetX;
-
+  const move = (x: number) => {
     if (dragging) {
       let newThumbCoordinate = (x - leftWindowBound) / (rightWindowBound - leftWindowBound);
       if (newThumbCoordinate < 0) {
@@ -462,7 +472,25 @@ const toRun = () => {
     }
   };
 
-  svg.onmouseleave = () => {
+  svg.onmousemove = (e) => {
+    const x = e.offsetX;
+
+    move(x);
+  };
+
+  svg.ontouchstart = (e) => {
+    // do nothing, but needed for ontouchmove to fire more than one time ????
+  };
+
+  svg.ontouchmove = (e) => {
+    const x = e.touches[0].clientX - svg.getBoundingClientRect().left;
+    
+    move(x);
+    
+    e.preventDefault();
+  };
+
+  const stop = () => {
     const thumbNeedsRedraw = dragging;
     const phaseThumbNeedsRedraw = draggingPhase;
     const wavelengthThumbNeedsRedraw = draggingWavelength;
@@ -482,28 +510,24 @@ const toRun = () => {
     }
   };
 
+  svg.onmouseleave = () => {
+    stop();
+  };
+
   svg.onmouseup = (e) => {
     if (e.button !== 0) {
       return;
     }
 
-    const thumbNeedsRedraw = dragging;
-    const phaseThumbNeedsRedraw = draggingPhase;
-    const wavelengthThumbNeedsRedraw = draggingWavelength;
+    stop();
+  };
 
-    dragging = false;
-    draggingPhase = false;
-    draggingWavelength = false;
+  svg.ontouchend = (e) => {
+    stop();
+  };
 
-    if (thumbNeedsRedraw) {
-      redrawThumb();
-    }
-    if (phaseThumbNeedsRedraw) {
-      redrawPhaseThumb();
-    }
-    if (wavelengthThumbNeedsRedraw) {
-      redrawWavelengthThumb();
-    }
+  svg.ontouchcancel = (e) => {
+    stop();
   };
 
   setInterval(update, 1000 / 60);
